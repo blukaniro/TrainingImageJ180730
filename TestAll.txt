@@ -1,4 +1,4 @@
-function Coverage () {
+function cover () {
     run("Split Channels");
     selectImage(1);
     rename("red");
@@ -13,31 +13,25 @@ function Coverage () {
     imageCalculator("Add create", "green-blue","green-red");
     rename("target");
     setAutoThreshold("Default");
-    run("Threshold", "thresholded remaining black");
+    run("Threshold...");
+    setOption("BlackBackground", false);
+    run("Convert to Mask");
     run("Invert");
-    run("Analyze Particles...", "size=100-Infinity summarize  show=Nothing");
-    IJ.renameResults ("Summary", "Results");
-    TA=getResult ("Total Area",0);
-    Width=getWidth();
-    Height=getHeight();
-    Cover=TA / (Width*Height)*100;
-    return (Cover);
+    run("Analyze Particles...", "size=100-Infinity summarize");
     run("Clear Results");
     }
 
 dir0 = getDirectory("home") ;
 dir = dir0 + "photo/";
 list = getFileList(dir);
-for (j=0; j<200; j++) {
-    open(dir +list[j]);
-    Result = Coverage ();
-    print (list[j], Result);
+for (i=0;i<12; i++) {
+    open(dir +list[i]);
+    print (list[i]);
+    cover ();
     close();
     close();
     close();
     close();
     close();
     close();
-    selectWindow("Results");
-    run("Close");
-    }
+}
